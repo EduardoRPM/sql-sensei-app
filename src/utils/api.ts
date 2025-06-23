@@ -5,7 +5,7 @@ const WEBHOOK_URL = "http://10.112.129.18:5678/webhook-test/1d3f82a8-a653-439f-a
 export const sendMessage = async (message: string): Promise<ApiResponse> => {
   try {
     console.log("Sending message to webhook:", message);
-    
+
     const response = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: {
@@ -22,7 +22,7 @@ export const sendMessage = async (message: string): Promise<ApiResponse> => {
 
     const data = await response.json();
     console.log("Received response:", data);
-    
+
     return data;
   } catch (error) {
     console.error("Error calling webhook:", error);

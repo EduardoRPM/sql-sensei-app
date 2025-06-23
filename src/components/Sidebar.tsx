@@ -26,7 +26,7 @@ export const Sidebar = ({ isOpen, onClose, exampleQueries, onExampleClick }: Sid
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Database className="w-5 h-5 text-blue-600" />
-            <h2 className="font-semibold text-gray-800">Quick Queries</h2>
+            <h2 className="font-semibold text-gray-800">Consultas rápidas </h2>
           </div>
           <button
             onClick={onClose}
@@ -40,7 +40,7 @@ export const Sidebar = ({ isOpen, onClose, exampleQueries, onExampleClick }: Sid
           <div>
             <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Example Questions
+              Preguntas de ejemplo
             </h3>
             <div className="space-y-2">
               {exampleQueries.map((query, index) => (
@@ -57,9 +57,9 @@ export const Sidebar = ({ isOpen, onClose, exampleQueries, onExampleClick }: Sid
 
           <div className="pt-4 border-t border-gray-200">
             <div className="text-xs text-gray-500 space-y-2">
-              <p>💡 <strong>Tip:</strong> Ask questions in natural language</p>
-              <p>🔍 I can help with data analysis, trends, and insights</p>
-              <p>📊 Try asking about sales, users, revenue, or any metrics</p>
+              <p>💡 <strong>Consejo:</strong> Haz preguntas en lenguaje natural</p>
+              <p>🔍 Puedo ayudarte con el análisis de datos, tendencias e información</p>
+              <p>📊 Intenta preguntar sobre eventos, usuarios, o asistencia de la secretaria académica</p>
             </div>
           </div>
         </div>

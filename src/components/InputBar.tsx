@@ -33,7 +33,7 @@ export const InputBar = ({ onSendMessage }: InputBarProps) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask me anything about your data..."
+              placeholder="Pregúntame cualquier cosa sobre tus datos..."
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none min-h-[50px] max-h-32"
               rows={1}
             />
