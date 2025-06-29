@@ -46,7 +46,7 @@ export const MessageBubble = ({ message }: MessageBubbleProps) => (
   >
     <div
       className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm ${message.isUser
-        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white ml-auto"
+        ? "bg-blue-600 text-white ml-auto"
         : "bg-white text-gray-800 border border-gray-200"
         }`}
     >

@@ -4,9 +4,10 @@ import { Send } from "lucide-react";
 
 interface InputBarProps {
   onSendMessage: (message: string) => void;
+  isSidebarOpen: boolean;
 }
 
-export const InputBar = ({ onSendMessage }: InputBarProps) => {
+export const InputBar = ({ onSendMessage, isSidebarOpen }: InputBarProps) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,8 +25,11 @@ export const InputBar = ({ onSendMessage }: InputBarProps) => {
     }
   };
 
-  return (
-    <div className="bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4">
+   return (
+    <div
+      className={`fixed bottom-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4 transition-all duration-300
+        ${isSidebarOpen ? "left-80" : "left-0"} right-0`}
+    >
       <div className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex space-x-3">
           <div className="flex-1 relative">
@@ -41,7 +45,7 @@ export const InputBar = ({ onSendMessage }: InputBarProps) => {
           <button
             type="submit"
             disabled={!message.trim()}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
+            className="bg-blue-600 text-white p-3 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
           >
             <Send className="w-5 h-5" />
           </button>

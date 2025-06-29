@@ -1,4 +1,3 @@
-
 import { X, MessageSquare, Database } from "lucide-react";
 
 interface SidebarProps {
@@ -13,30 +12,30 @@ export const Sidebar = ({ isOpen, onClose, exampleQueries, onExampleClick }: Sid
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={onClose}
         />
       )}
       
       <div
-        className={`fixed lg:static left-0 top-0 h-full bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed left-0 top-0 h-full bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         } w-80`}
       >
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Database className="w-5 h-5 text-blue-600" />
+            <Database className="w-5 h-5 text-blue-700" />
             <h2 className="font-semibold text-gray-800">Consultas rápidas </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors duration-200 lg:hidden"
+            className="p-1 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <X className="w-5 h-5 text-gray-600" />
           </button>
         </div>
 
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4 overflow-y-auto h-full pb-20">
           <div>
             <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center">
               <MessageSquare className="w-4 h-4 mr-2" />
@@ -55,13 +54,13 @@ export const Sidebar = ({ isOpen, onClose, exampleQueries, onExampleClick }: Sid
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-200">
+          {/* <div className="pt-4 border-t border-gray-200">
             <div className="text-xs text-gray-500 space-y-2">
               <p>💡 <strong>Consejo:</strong> Haz preguntas en lenguaje natural</p>
               <p>🔍 Puedo ayudarte con el análisis de datos, tendencias e información</p>
               <p>📊 Intenta preguntar sobre eventos, usuarios, o asistencia de la secretaria académica</p>
             </div>
-          </div>
+          </div>  */}
         </div>
       </div>
     </>
