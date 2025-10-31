@@ -1,6 +1,6 @@
 import { ApiResponse } from "@/types/chat";
 
-const WEBHOOK_URL = "http://10.112.128.201:5678/webhook/1d3f82a8-a653-439f-acfc-474c09f1cb6a";
+const WEBHOOK_URL = "https://n8n.glimpse.uaslp.mx/webhook-test/1d3f82a8-a653-439f-acfc-474c09f1cb6a";
 
 export const sendMessage = async (message: string): Promise<ApiResponse> => {
   try {
