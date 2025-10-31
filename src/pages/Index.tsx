@@ -137,37 +137,37 @@ const Index = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <header>
           <header className="bg-blue-900 text-white p-4 flex items-center justify-between shadow-md">
-            <img src="logoUaslp-white.png" alt="logoUaslp" className="h-10 w-auto" />
+            <img src="logoUaslp-white.png" alt="logoUaslp" className="h-12 w-auto" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center space-x-2 p-2 hover:bg-blue-800 rounded-lg transition-colors duration-200 border-none  border-none focus:outline-none">
                   <span>User</span>
-                   <ChevronDown className="w-5 h-5 text-white" />
+                  <ChevronDown className="w-5 h-5 text-white" />
                 </button>
               </DropdownMenuTrigger>
-            
-            <DropdownMenuContent align="end" className="bg-white text-black">
-               <DropdownMenuItem
-                 onClick={() => { window.location.href = "/Creditos" }}
-                className="flex items-center gap-2"
-              >
-              <Info className="h-4 w-4" /> Créditos
-            </DropdownMenuItem>
 
-              <DropdownMenuItem
-              // onClick={() => {
+              <DropdownMenuContent align="end" className="bg-white text-black">
+                <DropdownMenuItem
+                  onClick={() => { window.location.href = "/Creditos" }}
+                  className="flex items-center gap-2"
+                >
+                  <Info className="h-4 w-4" /> Créditos
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  // onClick={() => {
                   // Acción para cerrar sesión
-                //  localStorage.clear()
-                //  window.location.href = "/login"
-              // }}
-                className="flex items-center gap-2">
-                <LogOut className="h-4 w-4" /> Cerrar sesión
-              </DropdownMenuItem>
+                  //  localStorage.clear()
+                  //  window.location.href = "/login"
+                  // }}
+                  className="flex items-center gap-2">
+                  <LogOut className="h-4 w-4" /> Cerrar sesión
+                </DropdownMenuItem>
 
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
-         
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </header>
+
         </header>
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center space-x-3">
@@ -180,10 +180,10 @@ const Index = () => {
               </svg>
             </button>
             <h1 className="text-2xl font-bold bg-blue-900 bg-clip-text text-transparent">
-              Chat Assistant
+              IA Institucional
             </h1>
           </div>
-      
+
         </header>
 
         <div className="flex-1 flex flex-col overflow-hidden">

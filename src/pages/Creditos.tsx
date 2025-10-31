@@ -28,10 +28,10 @@ const CreditosPage = () => {
               <Info className="h-4 w-4" /> Créditos
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => {
-                localStorage.clear();
-                window.location.href = "/login";
-              }}
+              //onClick={() => {
+              //  localStorage.clear();
+              //  window.location.href = "/login";
+              //</DropdownMenuContent>}}
               className="flex items-center gap-2"
             >
               <LogOut className="h-4 w-4" /> Cerrar sesión
@@ -56,11 +56,11 @@ const CreditosPage = () => {
 
           <div className="bg-gray-100 p-6 rounded-lg shadow text-center w-full md:w-1/4">
             <h3 className="font-semibold text-lg mb-2">Equipo Técnico</h3>
-            <p><a href="mailto:eduardoxrpm@gmail.com" >Eduardo Rafael Pérez Martínez</a></p>
+            <p><a href="https://eduardo-rpm.vercel.app/" >Eduardo Rafael Pérez Martínez</a></p>
             <p><a href="mailto:erickagr119@gmail.com" >Ericka González Romero</a></p>
           </div>
         </div>
-
+      </main>
         <footer className="bg-white border-t pt-8 pb-10 text-sm text-left text-gray-800">
           <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8 items-start">
             <div>
@@ -110,7 +110,7 @@ const CreditosPage = () => {
             </div>
           </div>
         </footer>
-      </main>
+     
     </div>
   );
 };

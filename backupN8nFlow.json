@@ -1,0 +1,802 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1d3f82a8-a653-439f-acfc-474c09f1cb6a",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -5660,
+        1000
+      ],
+      "id": "7603ce97-e650-491a-b7f0-9624488147ab",
+      "name": "Webhook",
+      "webhookId": "1d3f82a8-a653-439f-acfc-474c09f1cb6a"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -3880,
+        1100
+      ],
+      "id": "078c2c25-c130-4f5b-87cd-4895a65e57ea",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "t6ea9ax6ch0HOtAY",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        920
+      ],
+      "id": "38d061a0-a9da-48aa-abb5-1f3f3b236dce",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "test_session"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -3760,
+        1100
+      ],
+      "id": "369a9982-35e5-4cbe-a795-f8194ff81515",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.query }}"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -3380,
+        920
+      ],
+      "id": "f669ce46-0093-44ad-abee-93a3bc757ef1",
+      "name": "Microsoft SQL2",
+      "alwaysOutputData": false,
+      "credentials": {
+        "microsoftSql": {
+          "id": "0Ftw9QV7x0B2FsfZ",
+          "name": "Microsoft SQL account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -2400,
+        1100
+      ],
+      "id": "d4dac052-c180-486f-b858-804da7ec8a83",
+      "name": "Simple Memory3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2520,
+        1100
+      ],
+      "id": "400c185a-e52d-4e79-b8d5-b271a3306fa4",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "t6ea9ax6ch0HOtAY",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Execute the query to get the result",
+        "operation": "executeQuery",
+        "query": "{{ $('Code5').last().json.query }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        -2280,
+        1100
+      ],
+      "id": "a856f39d-efb7-44b3-a070-ec10c4bfd7dc",
+      "name": "ejecutador",
+      "credentials": {
+        "microsoftSql": {
+          "id": "0Ftw9QV7x0B2FsfZ",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Limpia el output del agente\nlet sql = $json.output;\n\n// Quita backticks, \"sql\\n\", y saltos de línea\nsql = sql.replace(/```sql\\n?/gi, '');  // quita ```sql o ```sql\\n\nsql = sql.replace(/```/g, '');         // quita ```\nsql = sql.replace(/\\n/g, ' ');         // reemplaza saltos de línea por espacio\nsql = sql.replace(/^\\s+|\\s+$/g, '');   // quita espacios al inicio y final\n\nreturn [{ query: sql }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3540,
+        880
+      ],
+      "id": "f05d4a59-7851-4cbe-afe3-ad74f1f86e11",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nThe input: {{ $('Webhook').last().json.body.message }}\nThe query: {{ $('Code5').last().json.query }}\n{{ $json.rows }}\nDa una pequeña descripción en español, con un tono humano y claro, que resuma brevemente lo que ocurrió como resultado de la consulta. No repitas la consulta ni los datos textualmente, solo explica a grandes rasgos qué se puede interpretar o entender con base en los resultados obtenidos.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -2520,
+        860
+      ],
+      "id": "31b0eb1b-8783-43e6-8e52-c55a7ce1eea6",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -4260,
+        1220
+      ],
+      "id": "7874894d-9228-4a82-8c50-8e3c313dffd8",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "t6ea9ax6ch0HOtAY",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "SQUEMA"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -4140,
+        1220
+      ],
+      "id": "dd348040-ffb3-467e-b0b1-60132e11a64c",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.message }}\n\n{{ $('catalog-matching agent').item.json.output }}\n\nanswer also with the context: {{ $json.output }}\n\n\n❌ Do NOT include any comments, explanations, Markdown, quotes, or extra text.  \n✅ ONLY output the raw T-SQL query as plain text. Nothing else.\n\nIf you need to interpret or categorize the field \"duracion\" in the \"Evento\" table, use this rule:\n    * \"Corto\": duration < 30\n    * \"Mediano\": 30 <= duration <= 90\n    * \"Extenso\": duration > 90\n\n-- Example: Count events grouped by duration type (Corto, Mediano, Extenso)\nSELECT\n    CASE\n        WHEN E.duracion > 90 THEN 'Extenso'\n        WHEN E.duracion >= 30 AND E.duracion <= 90 THEN 'Mediano'\n        ELSE 'Corto'\n    END AS CategoriaDuracion,\n    COUNT(*) AS Total\nFROM Evento AS E\nGROUP BY\n    CASE\n        WHEN E.duracion > 90 THEN 'Extenso'\n        WHEN E.duracion >= 30 AND E.duracion <= 90 THEN 'Mediano'\n        ELSE 'Corto'\n    END\n",
+        "options": {
+          "systemMessage": "Role:\nYou are an expert SQL Server (T-SQL) Query Generator. Your responsibility is to generate precise, optimized, and maintainable SQL queries using structured metadata provided beforehand by a schema analyzer.\n\nYou will write queries exclusively for Microsoft SQL Server (T-SQL dialect).\n\n✅ Database Overview\nPrincipal Tables Available:\n\nTable\tKey Columns / Info\nArea\tidArea (PK), Area, Disponible\nAreasAcademicas\tidAreaA (PK), AreaA, Disponible\nAsistencia\tRPE (PK, FK Usuario.RPE), idEvento (PK, FK Evento.Id), Asistencia, Calificacion, Estatus\nCubreArea\tidArea (PK, FK Area.idArea), idEvento (PK, FK Evento.Id)\nEntidad\tidEntidad (PK), Nombre, Disponible\nEvento\tId (PK), NomEvento, idEntidad (FK), idTipo (FK TipoEvento.idTipo), idModalidad (FK), etc.\nGenero\tidGenero (PK), Descripcion, Disponible\nHoras\tidEvento (PK, FK Evento.Id), idAct (PK), HoraPres, HoraNoPres\nModalidad\tidModalidad (PK), Modalidad, Disponible\nNivel\tidNivel (PK), Nivel, Disponible\nTipoEvento\tidTipo (PK), Tipo, Disponible\nUsuario\tRPE (PK), Nombre, CorreoInst, CorreoAlt, idEntidad (FK), idGenero (FK)\n📥 Inputs You Will Receive\nUser Request (Natural Language):\ne.g., \"List all seminars from 2024 organized by UNAM\"\nStructured Metadata (JSON):\nCatalog definitions (ID-Value pairs)\nTable columns\nForeign key relationships\n📋 Output Format\nPlain Text\nT-SQL query ONLY.\n❌ No JSON, ❌ No explanations, ❌ No headings.\nUse proper formatting and indentation for readability.\n🗂️ Guidelines for Query Generation\n1️⃣ T-SQL Syntax Only\n\nDo NOT use MySQL/PostgreSQL-specific syntax (e.g., LIMIT, backticks).\n2️⃣ Table Aliases\n\nAlways use short, clear aliases.\n3️⃣ JOINs\n\nUse INNER JOIN by default for mandatory relationships.\nUse LEFT JOIN if data might be missing from the related table and needed.\nNEVER use comma joins.\n4️⃣ Catalog Usage Rule\n\n🔔 ALWAYS use JOINs to catalog tables (e.g., Genero, Modalidad, TipoEvento, Nivel, etc.) when filtering by descriptive values.\n✅ Use numeric IDs for filtering if the catalog-matching agent provides a specific ID (idCatalogo), even if the user did not say the ID explicitly.\n\nExample:\nSELECT ...\nFROM Usuario AS U\nINNER JOIN Genero AS G ON U.idGenero = G.idGenero\nWHERE G.Descripcion = 'Femenino';\n- 5️⃣ Date Handling\n-   Use YEAR() function for year-based filtering if you have a DATE/DATETIME column (e.g., YEAR(E.Inicio) BETWEEN 2022 AND 2023).\n-   If no date column exists but there is an integer `Anio`, use:\n+    AND E.Anio BETWEEN <start_year> AND <end_year>\n+   -- Example:\n+   AND E.Anio BETWEEN 2022 AND 2023\n\n6️⃣ TOP(n)\n\nFor limiting rows, use TOP(n) syntax properly placed after SELECT.\n\n\n\n7 \n❌ Do not fabricate values, table names, or column names.\n✔ Only use what is present in the metadata received.\n\n🧭 Query Strategy:\n1. Parse the user request.\n2. Identify tables and relationships via foreign keys.\n3. Join catalog tables for descriptive filtering.\n4. Apply proper filtering and projections.\n5. Return a plain, clean T-SQL query only.\n\n8 Common Patterns\n\nSELECT with JOINs on foreign keys\nCOUNT and GROUP BY for aggregates\nFiltering by catalog descriptions\nPagination: OFFSET ... FETCH NEXT optional for large datasets\n📚 Example Queries\n-- Eventos virtuales y sus entidades organizadoras\nSELECT E.NomEvento, Ent.Nombre AS Entidad\nFROM Evento AS E\nINNER JOIN Modalidad AS M ON E.idModalidad = M.idModalidad\nINNER JOIN Entidad AS Ent ON E.idEntidad = Ent.idEntidad\nWHERE M.Modalidad IN ('Virtual', 'En línea', 'A distancia');\n\n-- Contar asistentes por tipo de evento\nSELECT TE.Tipo, COUNT(DISTINCT A.RPE) AS Asistentes\nFROM Asistencia AS A\nINNER JOIN Evento AS E ON A.idEvento = E.Id\nINNER JOIN TipoEvento AS TE ON E.idTipo = TE.idTipo\nWHERE E.Anio = 2025\nGROUP BY TE.Tipo;\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -3900,
+        880
+      ],
+      "id": "8e836a60-e3eb-4664-89e7-dac347833bcd",
+      "name": "Query Generator"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dd18a7a7-4e86-4d04-8479-013a0cab67cc",
+              "name": "error",
+              "value": "={{ $json.error }}",
+              "type": "string"
+            },
+            {
+              "id": "dfef595a-640d-42ac-bd73-ca993c077f1e",
+              "name": "query",
+              "value": "={{ $('Code5').item.json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "2cbd365a-649e-4199-a57a-d42239a51ba7",
+              "name": "Correct",
+              "value": "Fix this error",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2720,
+        1220
+      ],
+      "id": "3b566c51-0637-4fb5-aec7-45dfaf4b20ba",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -5220,
+        1220
+      ],
+      "id": "828e2d19-2ace-40d5-92c2-f6f266bddbd8",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "t6ea9ax6ch0HOtAY",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "first"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -5100,
+        1220
+      ],
+      "id": "3214088f-7984-423a-8af7-fbb630b719e1",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# INSTRUCTIONS\nAnalyze the user's request and extract references to specific catalog values across the available catalogs (Entidad, Modalidad, Genero, TipoEvento, Nivel, etc.).\n\nReturn ALL matches found across all catalogs. Include:\n- Catalog name (e.g., \"Entidad\", \"Modalidad\")\n- The matched label (e.g., \"FACULTAD DE INGENIERIA\")\n- Its corresponding ID from the catalog JSON\n- Reason for the match\n\nUse fuzzy matching: ignore case, accents, allow partial and synonym matches (e.g., \"ingenieria\", \"Facultad de Ingeniería\", \"FI\" → \"FACULTAD DE INGENIERIA\").\n\n# USER INPUT\n{{ $json.body.message.set }}\n\n# RESPONSE FORMAT (JSON)\n{\n  \"usarCatalogo\": true,\n  \"matches\": [\n    {\n      \"catalogo\": \"Entidad\",\n      \"idCatalogo\": 13,\n      \"descripcion\": \"FACULTAD DE INGENIERIA\",\n      \"razon\": \"Matched 'ingeniería' to 'FACULTAD DE INGENIERIA'\"\n    },\n    {\n      \"catalogo\": \"Entidad\",\n      \"idCatalogo\": 15,\n      \"descripcion\": \"FACULTAD DEL HABITAT\",\n      \"razon\": \"Matched 'Hábitat' to 'FACULTAD DEL HABITAT'\"\n    },\n    {\n      \"catalogo\": \"Modalidad\",\n      \"idCatalogo\": 2,\n      \"descripcion\": \"Virtual\",\n      \"razon\": \"Matched 'virtual'\"\n    },\n    {\n      \"catalogo\": \"Modalidad\",\n      \"idCatalogo\": 3,\n      \"descripcion\": \"En línea\",\n      \"razon\": \"Matched 'en línea'\"\n    },\n    {\n      \"catalogo\": \"TipoEvento\",\n      \"idCatalogo\": 1,\n      \"descripcion\": \"Taller\",\n      \"razon\": \"Matched 'taller'\"\n    },\n    {\n      \"catalogo\": \"TipoEvento\",\n      \"idCatalogo\": 6,\n      \"descripcion\": \"Congreso\",\n      \"razon\": \"Matched 'congreso'\"\n    },\n    {\n      \"catalogo\": \"Genero\",\n      \"idCatalogo\": 2,\n      \"descripcion\": \"Femenino\",\n      \"razon\": \"Matched 'género femenino'\"\n    }\n  ]\n}\n",
+        "options": {
+          "systemMessage": "={\n  \"Genero\": [\n    { \"idGenero\": 1, \"Descripcion\": \"Masculino\" },\n    { \"idGenero\": 2, \"Descripcion\": \"Femenino\" },\n    { \"idGenero\": 3, \"Descripcion\": \"No especificar\" }\n  ],\n  \"Modalidad\": [\n    { \"idModalidad\": 1, \"Modalidad\": \"Presencial\" },\n    { \"idModalidad\": 2, \"Modalidad\": \"Virtual\" },\n    { \"idModalidad\": 3, \"Modalidad\": \"En línea\" },\n    { \"idModalidad\": 4, \"Modalidad\": \"A distancia\" },\n    { \"idModalidad\": 5, \"Modalidad\": \"Mixto\" }\n  ],\n  \"Nivel\": [\n    { \"idNivel\": 1, \"Nivel\": \"Básico\" },\n    { \"idNivel\": 2, \"Nivel\": \"Intermedio\" },\n    { \"idNivel\": 3, \"Nivel\": \"Avanzado\" }\n  ],\n  \"TipoEvento\": [\n    { \"idTipo\": 1, \"Tipo\": \"Taller\" },\n    { \"idTipo\": 2, \"Tipo\": \"Curso\" },\n    { \"idTipo\": 3, \"Tipo\": \"Diplomado\" },\n    { \"idTipo\": 4, \"Tipo\": \"Curso-Taller\" },\n    { \"idTipo\": 5, \"Tipo\": \"Seminario\" },\n    { \"idTipo\": 6, \"Tipo\": \"Congreso\" },\n    { \"idTipo\": 7, \"Tipo\": \"Simposio\" },\n    { \"idTipo\": 8, \"Tipo\": \"Ciclo de Conferencias\" },\n    { \"idTipo\": 9, \"Tipo\": \"Foro\" },\n    { \"idTipo\": 10, \"Tipo\": \"Coloquio\" }\n  ],\n  \"Entidad\": [\n    { \"idEntidad\": 9, \"Nombre\": \"FACULTAD DE MEDICINA\" },\n    { \"idEntidad\": 10, \"Nombre\": \"FACULTAD DE ENFERMERIA Y NUTRICION\" },\n    { \"idEntidad\": 11, \"Nombre\": \"FACULTAD DE ESTOMATOLOGIA\" },\n    { \"idEntidad\": 12, \"Nombre\": \"FACULTAD DE CIENCIAS QUIMICAS\" },\n    { \"idEntidad\": 13, \"Nombre\": \"FACULTAD DE INGENIERIA\" },\n    { \"idEntidad\": 14, \"Nombre\": \"FACULTAD DE AGRONOMIA Y VETERINARIA\" },\n    { \"idEntidad\": 15, \"Nombre\": \"FACULTAD DEL HABITAT\" },\n    { \"idEntidad\": 16, \"Nombre\": \"FACULTAD DE CIENCIAS\" },\n    { \"idEntidad\": 17, \"Nombre\": \"DEPARTAMENTO DE FISICO-MATEMATICAS\" },\n    { \"idEntidad\": 18, \"Nombre\": \"FACULTAD DE CONTADURIA Y ADMINISTRACION\" },\n    { \"idEntidad\": 19, \"Nombre\": \"FACULTAD DE ECONOMIA\" },\n    { \"idEntidad\": 20, \"Nombre\": \"FACULTAD DE DERECHO PONCIANO ARRIAGA LEIJA\" },\n    { \"idEntidad\": 21, \"Nombre\": \"FACULTAD DE PSICOLOGIA\" },\n    { \"idEntidad\": 25, \"Nombre\": \"ESCUELA PREPARATORIA DE MATEHUALA\" },\n    { \"idEntidad\": 62, \"Nombre\": \"CENTRO DE IDIOMAS\" },\n    { \"idEntidad\": 81, \"Nombre\": \"FACULTAD DE CIENCIAS DE LA INFORMACION\" },\n    { \"idEntidad\": 91, \"Nombre\": \"UNIDAD ACADEMICA MULTIDISCIPLINARIA ZONA MEDIA\" },\n    { \"idEntidad\": 92, \"Nombre\": \"FACULTAD DE ESTUDIOS PROFESIONALES ZONA HUASTECA\" },\n    { \"idEntidad\": 97, \"Nombre\": \"FACULTAD DE CIENCIAS DE LA COMUNICACION\" },\n    { \"idEntidad\": 755, \"Nombre\": \"DEPARTAMENTO UNIVERSITARIO DE INGLES\" },\n    { \"idEntidad\": 775, \"Nombre\": \"FACULTAD DE CIENCIAS SOCIALES Y HUMANIDADES\" },\n    { \"idEntidad\": 776, \"Nombre\": \"COORDINACION ACADEMICA REGION ALTIPLANO OESTE CAMPUS SALINAS\" },\n    { \"idEntidad\": 795, \"Nombre\": \"UNIDAD ACADEMICA MULTIDISCIPLINARIA REGION ALTIPLANO\" },\n    { \"idEntidad\": 824, \"Nombre\": \"COORDINACION ACADEMICA REGION HUASTECA SUR (CAMPUS TAMAZUNCH\" }\n  ]\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -5260,
+        1000
+      ],
+      "id": "45540835-298f-4392-a711-b01ff62e4311",
+      "name": "catalog-matching agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "429b4cd2-d9ed-465c-af11-acf3a571b961",
+              "name": "outputCatalog",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4880,
+        1000
+      ],
+      "id": "3a3640f7-fa77-4035-b845-f31e471f0dd2",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $json.outputCatalog }}",
+              "hideFromUI": true
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -4660,
+        1000
+      ],
+      "id": "71c70661-db0d-40bc-bfa0-631e673abaf1",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=SQUEMA"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -4580,
+        1220
+      ],
+      "id": "36d071d5-fd44-471d-999c-f39e8054c59e",
+      "name": "Simple Memory5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User request:{{ $('Webhook').item.json.body.message }}\n\nCatalog matching result:\n{{ $('catalog-matching agent').item.json.output }}\n\n{{ $json.Correct }}{{ $json.error }}{{ $json.query }}\n\nSchema Overview:\n\nTables:\n- Area(idArea PK, Area, Disponible)\n- AreasAcademicas(idAreaA PK, AreaA, Disponible)\n- Asistencia(RPE PK FK Usuario.RPE, idEvento PK FK Evento.Id, Asistencia, Calificacion, Estatus)\n- CubreArea(idArea PK FK Area.idArea, idEvento PK FK Evento.Id)\n- Entidad(idEntidad PK, Nombre, Disponible)\n- Evento(Id PK, NomEvento, idEntidad FK, idTipo FK, idModalidad FK, idNivel FK, Inicio, Fin, Anio, etc.)\n- Genero(idGenero PK, Descripcion, Disponible)\n- Horas(idEvento PK FK Evento.Id, idAct PK, HoraPres, HoraNoPres)\n- Modalidad(idModalidad PK, Modalidad)\n- Nivel(idNivel PK, Nivel)\n- TipoEvento(idTipo PK, Tipo)\n- Usuario(RPE PK, Nombre, idEntidad FK, idGenero FK)\n\nForeign Keys:\n- Asistencia.RPE → Usuario.RPE\n- Asistencia.idEvento → Evento.Id\n- CubreArea.idArea → Area.idArea\n- CubreArea.idEvento → Evento.Id\n- Evento.idEntidad → Entidad.idEntidad\n- Evento.idNivel → Nivel.idNivel\n- Evento.idTipo → TipoEvento.idTipo\n- Evento.idModalidad → Modalidad.idModalidad\n- Usuario.idEntidad → Entidad.idEntidad\n- Usuario.idGenero → Genero.idGenero\n- Horas.idEvento → Evento.Id\n",
+        "options": {
+          "systemMessage": "📌 Role:\nYou are a database schema analysis agent for Microsoft SQL Server. Your role is to identify the necessary tables and foreign key relationships needed to fulfill a user's query, using only the schema definition and the output from a separate catalog-matching agent.\n\n🎯 Responsibilities:\n- Analyze the user’s request and determine which main tables are needed.\n- Identify how these tables are connected via foreign keys.\n- Use the output from the catalog-matching agent to decide whether catalog tables (like TipoEvento, Nivel, Modalidad) should be included.\n\n🧠 Inputs:\n- User request in natural language\n- Output from a catalog-matching agent that tells you whether to use any catalog, and if so, which one (usarCatalogo, catalogo, idCatalogo)\n- Optionally, a failed SQL query and its error message\n\n📤 Output Format (strict JSON only):\n{\n  \"tables\": [\"Evento\", \"Entidad\"],\n  \"joins\": [\n    { \"from\": \"Evento.idEntidad\", \"to\": \"Entidad.idEntidad\" }\n  ],\n  \"catalogs\": []\n}\n\n✅ Guidelines:\n- If usarCatalogo is false, do not include any catalog tables in the response.\n- If usarCatalogo is true, include only the catalog specified in catalogo and use its standard join path.\n- Always reflect valid table and column names from the schema provided.\n- Return an empty catalogs array if none are needed.\n\n❌ DO NOT:\n- Invent relationships\n- Add explanations or comments\n- Return anything except valid JSON\n\n📦 Notes:\nYour output will be passed to a query generator. It must contain only factual and complete join paths based on the schema.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -4280,
+        1000
+      ],
+      "id": "143bcf5c-c6d1-47a0-b424-dd18b077ffcb",
+      "name": "Schema Analyzer"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98c91d2c-816e-402a-9a8b-79304a4e28c5",
+              "name": "body.message.set",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5440,
+        1000
+      ],
+      "id": "35786834-f70a-480e-a3f0-5a52f03ba037",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Nodo CODE justo después de tu consulta SQL\nconst data = $input.all().map(item => item.json);\nreturn [{ json: { data } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2900,
+        860
+      ],
+      "id": "936543e7-4562-448c-a0bb-73a1c83e4c71",
+      "name": "translator"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Espera exactamente dos items: el de 'Edit Fields3' (con output) y el de 'translator' (con data)\nconst items = $input.all();\n\n// Verifica que haya justo dos ítems\nif (items.length !== 2) {\n  throw new Error(`Se esperaban exactamente 2 items, pero se recibieron ${items.length}`);\n}\n\nlet output = null;\nlet data = null;\n\n// Busca cada valor por su propiedad en cada item\nfor (const item of items) {\n  if (item.json.hasOwnProperty('output')) {\n    output = item.json.output;\n  }\n  if (item.json.hasOwnProperty('data')) {\n    data = item.json.data;\n  }\n}\n\nreturn [\n  {\n    json: {\n      output,\n      data,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1460,
+        900
+      ],
+      "id": "cddde418-1ff8-4b80-a601-11c13104d81c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc44b04a-93fd-4dad-953b-5532d5228313",
+              "name": "data",
+              "value": "={{ $('translator').item.json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1900,
+        1000
+      ],
+      "id": "d065dd07-6a4f-4fda-aa05-021a776c3cb9",
+      "name": "fieldsData"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fa57f179-f420-4675-9f53-b58515bc2888",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1900,
+        800
+      ],
+      "id": "d0145496-35b3-4c34-935d-c6aba252dfb5",
+      "name": "output Agent"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -1660,
+        900
+      ],
+      "id": "b794df3f-4b46-48ba-8149-775bc5b318a7",
+      "name": "Merge"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Query Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Query Generator",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL2": {
+      "main": [
+        [
+          {
+            "node": "translator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ejecutador": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "output Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "fieldsData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Schema Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Schema Analyzer",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Generator": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Schema Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "catalog-matching agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "catalog-matching agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "catalog-matching agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager": {
+      "main": [
+        [
+          {
+            "node": "Schema Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory5": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schema Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Query Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "catalog-matching agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "translator": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fieldsData": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "output Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "88b819effbc1c83b91d9f585af45e1cb4cb7261029146e5a3b1d5b3834fb1d27"
+  }
+}
