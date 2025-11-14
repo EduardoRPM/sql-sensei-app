@@ -1,5 +1,6 @@
 import { Message } from "@/types/chat";
 import { formatTime } from "@/utils/dateUtils";
+import { DataChart } from "./DataChart";
 
 interface MessageBubbleProps {
   message: Message;
@@ -40,39 +41,48 @@ const ResultTable = ({ data }: { data: any[] }) => {
   );
 };
 
-export const MessageBubble = ({ message }: MessageBubbleProps) => (
-  <div
-    className={`flex ${message.isUser ? "justify-end" : "justify-start"} animate-fade-in`}
-  >
+export const MessageBubble = ({ message }: MessageBubbleProps) => {
+  const hasData = Array.isArray(message.data) && message.data.length > 0;
+  const normalizedData = hasData
+    ? message.data.map((row) =>
+      Object.fromEntries(
+        Object.entries(row).map(([k, v]) => [
+          k,
+          typeof v === "string" ? v.trim() : v,
+        ]),
+      ),
+    )
+    : [];
+
+  return (
     <div
-      className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm ${message.isUser
-        ? "bg-blue-600 text-white ml-auto"
-        : "bg-white text-gray-800 border border-gray-200"
-        }`}
+      className={`flex ${message.isUser ? "justify-end" : "justify-start"} animate-fade-in`}
     >
-      <div className="text-sm leading-relaxed whitespace-pre-wrap">
-        {message.content}
-      </div>
-      {Array.isArray(message.data) && message.data.length > 0 && (
-        <ResultTable
-          data={message.data.map((row) =>
-            Object.fromEntries(
-              Object.entries(row).map(([k, v]) =>
-                typeof v === "string" ? [k, v.trim()] : [k, v]
-              )
-            )
-          )}
-        />
-      )}
       <div
-        className={`text-xs mt-2 ${message.isUser ? "text-blue-100" : "text-gray-500"
+        className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm ${message.isUser
+          ? "bg-blue-600 text-white ml-auto"
+          : "bg-white text-gray-800 border border-gray-200"
           }`}
       >
-        {formatTime(message.timestamp)}
+        <div className="text-sm leading-relaxed whitespace-pre-wrap">
+          {message.content}
+        </div>
+        {hasData && (
+          <>
+            <ResultTable data={normalizedData} />
+            <DataChart data={normalizedData} />
+          </>
+        )}
+        <div
+          className={`text-xs mt-2 ${message.isUser ? "text-blue-100" : "text-gray-500"
+            }`}
+        >
+          {formatTime(message.timestamp)}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 
 
