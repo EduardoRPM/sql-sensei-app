@@ -10,24 +10,28 @@ interface ChatWindowProps {
 }
 
 export const ChatWindow = ({ messages, isTyping }: ChatWindowProps) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, isTyping]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div
+      ref={containerRef}
+      className="flex-1 overflow-y-auto p-4 pb-32 space-y-4"
+    >
       <div className="max-w-4xl mx-auto space-y-4">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
         {isTyping && <TypingIndicator />}
-        <div ref={messagesEndRef} />
       </div>
     </div>
   );
