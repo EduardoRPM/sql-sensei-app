@@ -351,7 +351,7 @@ export const DataChart = ({ data }: DataChartProps) => {
   return (
     <div className="mt-4 w-full">
       <div
-        className="relative h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm cursor-pointer"
+        className="relative h-80 w-full rounded-lg bg-white p-3 shadow-sm cursor-pointer border-0"
         role="button"
         tabIndex={0}
         onClick={() => setIsExpanded(true)}
