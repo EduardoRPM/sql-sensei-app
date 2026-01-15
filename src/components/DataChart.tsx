@@ -305,10 +305,10 @@ export const DataChart = ({ data }: DataChartProps) => {
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
-          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors text-lg"
+          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors"
           aria-label="Expand chart"
         >
-          ⤢
+          <span className="material-symbols-outlined text-xl">expand_content</span>
         </button>
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
@@ -379,7 +379,7 @@ export const DataChart = ({ data }: DataChartProps) => {
                 className="text-[#496095] hover:text-[#496095CC] text-xl leading-none transition-colors"
                 aria-label="Close modal"
               >
-                ×
+                <span className="material-symbols-outlined text-2xl">close</span>
               </button>
             </div>
             <div className="h-[480px] w-full">
