@@ -215,9 +215,11 @@ export const DataChart = ({ data }: DataChartProps) => {
           <XAxis
             dataKey={categoryKey}
             tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
-            interval={0}
-            angle={0}
-            textAnchor="middle"
+            interval="preserveStartEnd"
+            angle={-25}
+            textAnchor="end"
+            minTickGap={10}
+            tickMargin={12}
             axisLine={false}
             tickLine={false}
           />
@@ -257,9 +259,11 @@ export const DataChart = ({ data }: DataChartProps) => {
         <XAxis
           dataKey={categoryKey}
           tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
-          interval={0}
-          angle={0}
-          textAnchor="middle"
+          interval="preserveStartEnd"
+          angle={-25}
+          textAnchor="end"
+          minTickGap={10}
+          tickMargin={12}
           axisLine={false}
           tickLine={false}
         />
