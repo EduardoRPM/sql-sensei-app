@@ -301,14 +301,25 @@ export const DataChart = ({ data }: DataChartProps) => {
 
   return (
     <div className="mt-4 w-full">
-      <div className="relative h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm">
+      <div
+        className="relative h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm cursor-pointer"
+        role="button"
+        tabIndex={0}
+        onClick={() => setIsExpanded(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setIsExpanded(true);
+          }
+        }}
+      >
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
-          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors"
+          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-white/90 shadow-sm text-[#496095] hover:bg-white hover:text-[#496095CC] transition-colors"
           aria-label="Expand chart"
         >
-          <span className="material-symbols-outlined text-xl">expand_content</span>
+          <span className="material-symbols-outlined text-2xl">expand_content</span>
         </button>
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
