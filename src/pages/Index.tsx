@@ -119,6 +119,19 @@ const Index = () => {
     }
   };
 
+  const handleCancelSend = () => {
+    setIsTyping(false);
+    setMessages(prev => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        content: "Se ha cancelado la petición.",
+        isUser: false,
+        timestamp: new Date(),
+      },
+    ]);
+  };
+
 
   const handleExampleClick = (query: string) => {
     handleSendMessage(query);
@@ -126,7 +139,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex h-screen bg-blue-50 overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -180,7 +193,11 @@ const Index = () => {
 
         <div className="flex-1 flex flex-col min-h-0">
           <ChatWindow messages={messages} isTyping={isTyping} />
-          <InputBar onSendMessage={handleSendMessage} isSidebarOpen={isSidebarOpen} />
+          <InputBar
+            onSendMessage={handleSendMessage}
+            onCancelSend={handleCancelSend}
+            isSidebarOpen={isSidebarOpen}
+          />
 
         </div>
       </div>
