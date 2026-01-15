@@ -10,14 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { LogOut, ChevronDown, Info } from "lucide-react";
 
 const Index = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "¡Hola! Soy tu asistente de chat de SQL. ¡Pregúntame cualquier cosa sobre tus datos y te ayudaré a encontrar las respuestas!",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -126,7 +119,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex h-screen bg-blue-50 overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden">
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -179,7 +172,11 @@ const Index = () => {
         
 
         <div className="flex-1 flex flex-col min-h-0">
-          <ChatWindow messages={messages} isTyping={isTyping} />
+          <ChatWindow
+            messages={messages}
+            isTyping={isTyping}
+            onSuggestionSelect={handleExampleClick}
+          />
           <InputBar onSendMessage={handleSendMessage} isSidebarOpen={isSidebarOpen} />
 
         </div>

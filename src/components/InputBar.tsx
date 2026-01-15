@@ -18,36 +18,37 @@ export const InputBar = ({ onSendMessage, isSidebarOpen }: InputBarProps) => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
     }
   };
 
-   return (
+  return (
     <div
-      className={`fixed bottom-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4 transition-all duration-300
-        ${isSidebarOpen ? "left-80" : "left-0"} right-0`}
+      className={`fixed bottom-0 border border-gray-100 px-6 py-4 backdrop-blur-sm transition-all duration-300 ${
+        isSidebarOpen ? "left-80" : "left-0"
+      } right-0`}
     >
       <div className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex space-x-3">
-          <div className="flex-1 relative">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Pregúntame cualquier cosa sobre tus datos..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none min-h-[50px] max-h-32"
-              rows={1}
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="flex items-center gap-3">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Input"
+            className="flex-1 h-12 rounded-full border-2 border-gray-300 bg-white px-5 text-sm sm:text-base text-gray-800 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
           <button
             type="submit"
             disabled={!message.trim()}
-            className="bg-blue-600 text-white p-3 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
+            className="h-12 px-5 rounded-full bg-blue-800 text-white flex items-center gap-2 shadow-sm hover:shadow-md transition disabled:opacity-60 disabled:cursor-not-allowed"
+            aria-label="Enviar"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
+            <span className="text-sm font-medium">Enviar</span>
           </button>
         </form>
       </div>
