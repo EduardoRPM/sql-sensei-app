@@ -94,6 +94,7 @@ export const DataChart = ({ data }: DataChartProps) => {
       outerRadius,
       percent,
       value,
+      name,
     }: any) => {
       const RADIAN = Math.PI / 180;
       const radius = outerRadius + 24;
@@ -105,7 +106,16 @@ export const DataChart = ({ data }: DataChartProps) => {
         <text x={x} y={y} textAnchor="middle" dominantBaseline="middle">
           <tspan
             x={x}
-            dy="-0.2em"
+            dy="-1.4em"
+            fontSize="14"
+            fontWeight="600"
+            fill="#496095"
+          >
+            {name}
+          </tspan>
+          <tspan
+            x={x}
+            dy="1.4em"
             fontSize="16"
             fontWeight="700"
             fill="#496095"
@@ -134,7 +144,7 @@ export const DataChart = ({ data }: DataChartProps) => {
           <CartesianGrid strokeDasharray="0" stroke="#49609533" horizontal={false} vertical={true} />
           <XAxis
             type="number"
-            tick={{ fontSize: 12, fill: "#ffffff" }}
+            tick={{ fontSize: 12, fill: "#496095" }}
             axisLine={false}
             tickLine={false}
           />
@@ -204,7 +214,7 @@ export const DataChart = ({ data }: DataChartProps) => {
           <CartesianGrid strokeDasharray="0" stroke="#49609533" horizontal={true} vertical={false} />
           <XAxis
             dataKey={categoryKey}
-            tick={{ fontSize: 14, fill: "#ffffff", fontWeight: 600 }}
+            tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
             interval={0}
             angle={0}
             textAnchor="middle"
@@ -246,7 +256,7 @@ export const DataChart = ({ data }: DataChartProps) => {
         <CartesianGrid strokeDasharray="0" stroke="#49609533" horizontal={true} vertical={false} />
         <XAxis
           dataKey={categoryKey}
-          tick={{ fontSize: 14, fill: "#ffffff", fontWeight: 600 }}
+          tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
           interval={0}
           angle={0}
           textAnchor="middle"
