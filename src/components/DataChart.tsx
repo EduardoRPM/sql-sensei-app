@@ -92,7 +92,7 @@ export const DataChart = ({ data }: DataChartProps) => {
 
   const { categoryKey, valueKey } = config;
 
-  const renderChart = () => {
+  const renderChart = (expanded = false) => {
     const baseMargin = { top: 20, right: 20, left: 10, bottom: 40 };
     const pieLabel = ({
       cx,
@@ -202,7 +202,7 @@ export const DataChart = ({ data }: DataChartProps) => {
             cx="50%"
             cy="50%"
             innerRadius={0}
-            outerRadius={90}
+            outerRadius={expanded ? 180 : 90}
             paddingAngle={1}
             label={pieLabel}
             labelLine={false}
@@ -305,7 +305,7 @@ export const DataChart = ({ data }: DataChartProps) => {
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
-          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors"
+          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors text-lg"
           aria-label="Expand chart"
         >
           ⤢
@@ -384,7 +384,7 @@ export const DataChart = ({ data }: DataChartProps) => {
             </div>
             <div className="h-[480px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                {renderChart()}
+                {renderChart(true)}
               </ResponsiveContainer>
             </div>
           </div>
