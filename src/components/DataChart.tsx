@@ -90,17 +90,17 @@ export const DataChart = ({ data }: DataChartProps) => {
             margin={{ top: 20, right: 20, left: 10, bottom: 40 }}
           >
             <CartesianGrid strokeDasharray="0" stroke="#E5E7EB" horizontal={true} vertical={false} />
-           {/* <XAxis
+            <XAxis
               dataKey={categoryKey}
-              tick={{ fontSize: 14, fill: "#374151", fontWeight: 600 }}
+              tick={{ fontSize: 14, fill: "#ffffffff", fontWeight: 600 }}
               interval={0}
               angle={0}
               textAnchor="middle"
               axisLine={false}
               tickLine={false}
-            />*/}
+            />
             <YAxis 
-              tick={{ fontSize: 12, fill: "#9CA3AF" }} 
+              tick={{ fontSize: 12, fill: "#374151" }} 
               allowDecimals={false}
               axisLine={false}
               tickLine={false}
@@ -116,7 +116,7 @@ export const DataChart = ({ data }: DataChartProps) => {
             />
             <Bar
               dataKey={valueKey}
-              radius={[2, 2, 0, 0]}
+              radius={[4, 4, 0, 0]}
               fill="#4F6BA8"
               maxBarSize={60}
             />
