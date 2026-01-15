@@ -70,6 +70,13 @@ const findConfig = (data: DataRow[]) => {
 
 export const DataChart = ({ data }: DataChartProps) => {
   const [chartType, setChartType] = useState<"vertical" | "horizontal" | "pastel" | "lineal">("vertical");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const chartTitles: Record<typeof chartType, string> = {
+    vertical: "Vertical bar",
+    horizontal: "Horizontal bar",
+    pastel: "Pastel (pie)",
+    lineal: "Lineal",
+  };
   const config = findConfig(data);
 
   if (!config) {
@@ -294,7 +301,15 @@ export const DataChart = ({ data }: DataChartProps) => {
 
   return (
     <div className="mt-4 w-full">
-      <div className="h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm">
+      <div className="relative h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm">
+        <button
+          type="button"
+          onClick={() => setIsExpanded(true)}
+          className="absolute right-3 top-3 text-[#496095] hover:text-[#496095CC] transition-colors"
+          aria-label="Expand chart"
+        >
+          ⤢
+        </button>
         <ResponsiveContainer width="100%" height="100%">
           {renderChart()}
         </ResponsiveContainer>
@@ -346,6 +361,35 @@ export const DataChart = ({ data }: DataChartProps) => {
           Lineal
         </button>
       </div>
+
+      {isExpanded && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-4"
+          onClick={() => setIsExpanded(false)}
+        >
+          <div
+            className="relative w-full max-w-5xl rounded-2xl bg-white p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-[#496095]">{chartTitles[chartType]}</h3>
+              <button
+                type="button"
+                onClick={() => setIsExpanded(false)}
+                className="text-[#496095] hover:text-[#496095CC] text-xl leading-none transition-colors"
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
+            <div className="h-[480px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                {renderChart()}
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
