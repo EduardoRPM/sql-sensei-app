@@ -93,7 +93,48 @@ export const DataChart = ({ data }: DataChartProps) => {
   const { categoryKey, valueKey } = config;
 
   const renderChart = (expanded = false) => {
-    const baseMargin = { top: 20, right: 20, left: 10, bottom: 40 };
+    const baseMargin = { top: 20, right: 20, left: 10, bottom: expanded ? 80 : 60 };
+    const CategoryTick = ({ x = 0, y = 0, payload }: any) => {
+      const label = String(payload?.value ?? "");
+      const fontSize = expanded ? 14 : 12;
+      const lineHeight = fontSize + 2;
+      const maxCharsPerLine = expanded ? 16 : 12;
+      const words = label.split(" ");
+      const lines: string[] = [];
+      let current = "";
+
+      words.forEach((word) => {
+        const tentative = current ? `${current} ${word}` : word;
+        if (tentative.length <= maxCharsPerLine) {
+          current = tentative;
+        } else {
+          if (current) lines.push(current);
+          current = word;
+        }
+      });
+      if (current) lines.push(current);
+
+      let displayLines = lines;
+      if (displayLines.length === 1 && displayLines[0].length > maxCharsPerLine) {
+        const chunk = displayLines[0].slice(0, maxCharsPerLine * 2 - 3) + "...";
+        displayLines = [chunk.slice(0, maxCharsPerLine), chunk.slice(maxCharsPerLine)];
+      } else if (displayLines.length > 2) {
+        const combined = displayLines.join(" ");
+        const chunk = combined.slice(0, maxCharsPerLine * 2 - 3) + "...";
+        displayLines = [chunk.slice(0, maxCharsPerLine), chunk.slice(maxCharsPerLine)];
+      }
+
+      return (
+        <text x={x} y={y + 8} textAnchor="middle" fill="#496095" fontSize={fontSize} fontWeight={600}>
+          {displayLines.map((line, idx) => (
+            <tspan key={idx} x={x} dy={idx === 0 ? 0 : lineHeight}>
+              {line}
+            </tspan>
+          ))}
+        </text>
+      );
+    };
+
     const pieLabel = ({
       cx,
       cy,
@@ -215,6 +256,22 @@ export const DataChart = ({ data }: DataChartProps) => {
       );
     }
 
+    const axisCommon = expanded
+      ? {
+          interval: 0,
+          tickMargin: 20,
+          height: 80,
+          padding: { left: 24, right: 24 },
+          tick: <CategoryTick />,
+        }
+      : {
+          interval: 0,
+          tickMargin: 14,
+          height: 70,
+          padding: { left: 14, right: 14 },
+          tick: <CategoryTick />,
+        };
+
     if (chartType === "lineal") {
       return (
         <LineChart data={normalized} margin={baseMargin}>
@@ -222,11 +279,7 @@ export const DataChart = ({ data }: DataChartProps) => {
           <XAxis
             dataKey={categoryKey}
             tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
-            interval="preserveStartEnd"
-            angle={-25}
-            textAnchor="end"
-            minTickGap={10}
-            tickMargin={12}
+            {...axisCommon}
             axisLine={false}
             tickLine={false}
           />
@@ -266,11 +319,7 @@ export const DataChart = ({ data }: DataChartProps) => {
         <XAxis
           dataKey={categoryKey}
           tick={{ fontSize: 14, fill: "#496095", fontWeight: 600 }}
-          interval="preserveStartEnd"
-          angle={-25}
-          textAnchor="end"
-          minTickGap={10}
-          tickMargin={12}
+          {...axisCommon}
           axisLine={false}
           tickLine={false}
         />
