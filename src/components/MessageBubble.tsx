@@ -11,14 +11,14 @@ const ResultTable = ({ data }: { data: any[] }) => {
   if (!data.length) return null;
   const headers = Object.keys(data[0]);
   return (
-    <div className="overflow-x-auto mt-2">
-      <table className="min-w-full border text-xs rounded">
+    <div className="overflow-x-auto mt-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+      <table className="min-w-full text-sm">
         <thead>
-          <tr>
+          <tr className="border-b border-gray-200">
             {headers.map((h) => (
               <th
                 key={h}
-                className="px-2 py-1 border font-semibold bg-gray-50"
+                className="px-6 py-3 text-left font-medium text-gray-500 bg-white"
               >
                 {h}
               </th>
@@ -27,9 +27,9 @@ const ResultTable = ({ data }: { data: any[] }) => {
         </thead>
         <tbody>
           {data.map((row, i) => (
-            <tr key={i} className="even:bg-gray-50">
+            <tr key={i} className="border-b border-gray-200 last:border-b-0">
               {headers.map((h) => (
-                <td key={h} className="px-2 py-1 border">
+                <td key={h} className="px-6 py-3 text-gray-700">
                   {row[h]}
                 </td>
               ))}

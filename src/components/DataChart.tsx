@@ -7,6 +7,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useState } from "react";
 
 type DataRow = Record<string, unknown>;
 
@@ -64,6 +65,7 @@ const findConfig = (data: DataRow[]) => {
 };
 
 export const DataChart = ({ data }: DataChartProps) => {
+  const [chartType, setChartType] = useState<"vertical" | "horizontal" | "pastel" | "lineal">("vertical");
   const config = findConfig(data);
 
   if (!config) {
@@ -80,41 +82,94 @@ export const DataChart = ({ data }: DataChartProps) => {
   const { categoryKey, valueKey } = config;
 
   return (
-    <div className="mt-4 h-64 w-full rounded-xl border border-dashed border-gray-200 bg-gray-50/60 p-3">
-      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
-        Visualización rápida
-      </p>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={normalized}
-          margin={{ top: 10, right: 16, left: 0, bottom: 24 }}
+    <div className="mt-4 w-full">
+      <div className="h-80 w-full rounded-lg bg-white border border-gray-200 p-4 shadow-sm">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={normalized}
+            margin={{ top: 20, right: 20, left: 10, bottom: 40 }}
+          >
+            <CartesianGrid strokeDasharray="0" stroke="#E5E7EB" horizontal={true} vertical={false} />
+           {/* <XAxis
+              dataKey={categoryKey}
+              tick={{ fontSize: 14, fill: "#374151", fontWeight: 600 }}
+              interval={0}
+              angle={0}
+              textAnchor="middle"
+              axisLine={false}
+              tickLine={false}
+            />*/}
+            <YAxis 
+              tick={{ fontSize: 12, fill: "#9CA3AF" }} 
+              allowDecimals={false}
+              axisLine={false}
+              tickLine={false}
+            />
+            <RechartsTooltip
+              formatter={(value) => (typeof value === "number" ? value.toLocaleString() : value)}
+              contentStyle={{
+                backgroundColor: "white",
+                border: "1px solid #E5E7EB",
+                borderRadius: "8px",
+                padding: "8px 12px"
+              }}
+            />
+            <Bar
+              dataKey={valueKey}
+              radius={[2, 2, 0, 0]}
+              fill="#4F6BA8"
+              maxBarSize={60}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      
+      <div className="flex gap-2 mt-3 justify-start">
+        <button
+          onClick={() => setChartType("horizontal")}
+          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+            chartType === "horizontal"
+              ? "text-white"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+          }`}
+          style={chartType === "horizontal" ? { backgroundColor: "#496095" } : {}}
         >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis
-            dataKey={categoryKey}
-            tick={{ fontSize: 12 }}
-            interval={0}
-            angle={normalized.length > 4 ? -20 : 0}
-            textAnchor={normalized.length > 4 ? "end" : "middle"}
-          />
-          <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
-          <RechartsTooltip
-            formatter={(value) => (typeof value === "number" ? value.toLocaleString() : value)}
-          />
-          <Bar
-            dataKey={valueKey}
-            radius={[6, 6, 0, 0]}
-            fill="url(#chatGradient)"
-            maxBarSize={48}
-          />
-          <defs>
-            <linearGradient id="chatGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#1E3A8A" stopOpacity={0.9} />
-              <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.7} />
-            </linearGradient>
-          </defs>
-        </BarChart>
-      </ResponsiveContainer>
+          Horizontal bar
+        </button>
+        <button
+          onClick={() => setChartType("vertical")}
+          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+            chartType === "vertical"
+              ? "text-white"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+          }`}
+          style={chartType === "vertical" ? { backgroundColor: "#496095" } : {}}
+        >
+          Vertical bar
+        </button>
+        <button
+          onClick={() => setChartType("pastel")}
+          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+            chartType === "pastel"
+              ? "text-white"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+          }`}
+          style={chartType === "pastel" ? { backgroundColor: "#496095" } : {}}
+        >
+          Pastel
+        </button>
+        <button
+          onClick={() => setChartType("lineal")}
+          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+            chartType === "lineal"
+              ? "text-white"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+          }`}
+          style={chartType === "lineal" ? { backgroundColor: "#496095" } : {}}
+        >
+          Lineal
+        </button>
+      </div>
     </div>
   );
 };
