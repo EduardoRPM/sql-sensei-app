@@ -59,10 +59,11 @@ export const InputBar = ({ onSendMessage, onCancelSend, isSidebarOpen }: InputBa
     }
   };
 
-   return (
+  return (
     <div
-      className={`fixed bottom-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4 transition-all duration-300
-        ${isSidebarOpen ? "left-80" : "left-0"} right-0`}
+      className={`fixed bottom-0 border border-gray-100 px-6 py-4 backdrop-blur-sm transition-all duration-300 ${
+        isSidebarOpen ? "left-80" : "left-0"
+      } right-0`}
     >
       <div className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex space-x-3">

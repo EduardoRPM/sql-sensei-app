@@ -159,7 +159,7 @@ export const Sidebar = ({
         <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
           <button
             onClick={onNewChat}
-            className="w-full inline-flex items-center gap-2 rounded-lg px-3 py-2 bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+            className="w-full inline-flex items-center gap-2 rounded-lg px-3 py-2 bg-blue-900 text-white text-sm font-medium hover:bg-blue-800 transition-colors duration-200"
           >
             <PlusCircle className="w-4 h-4" />
             Nuevo chat
@@ -202,37 +202,40 @@ export const Sidebar = ({
               )}
             </section>
 
-            <section aria-label="Reportes">
-              <button
-                onClick={() => setAreReportsOpen((prev) => !prev)}
-                className="w-full flex items-center justify-between text-sm font-semibold text-gray-800 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
-                aria-expanded={areReportsOpen}
-              >
-                <span className="inline-flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4 text-gray-600" />
-                  Reportes
-                </span>
-                {areReportsOpen ? (
-                  <ChevronDown className="w-4 h-4 text-gray-500" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-gray-500" />
-                )}
-              </button>
+            {/* Reportes ocultos temporalmente */}
+            {false && (
+              <section aria-label="Reportes">
+                <button
+                  onClick={() => setAreReportsOpen((prev) => !prev)}
+                  className="w-full flex items-center justify-between text-sm font-semibold text-gray-800 px-2 py-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                  aria-expanded={areReportsOpen}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-gray-600" />
+                    Reportes
+                  </span>
+                  {areReportsOpen ? (
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-gray-500" />
+                  )}
+                </button>
 
-              {areReportsOpen && (
-                <div className="mt-2 space-y-1 overflow-y-auto max-h-48 pr-1">
-                  {reportItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={item.onClick}
-                      className="w-full text-left px-3 py-2 rounded-md text-sm transition-colors duration-150 bg-gray-50 border border-transparent hover:bg-gray-100 text-gray-700"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </section>
+                {areReportsOpen && (
+                  <div className="mt-2 space-y-1 overflow-y-auto max-h-48 pr-1">
+                    {reportItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={item.onClick}
+                        className="w-full text-left px-3 py-2 rounded-md text-sm transition-colors duration-150 bg-gray-50 border border-transparent hover:bg-gray-100 text-gray-700"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
           </nav>
 
           {footer}
