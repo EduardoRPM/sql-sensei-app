@@ -350,6 +350,16 @@ export const DataChart = ({ data }: DataChartProps) => {
 
   return (
     <div className="mt-4 w-full">
+      <div className="flex justify-end mb-2">
+        <button
+          type="button"
+          onClick={() => setIsExpanded(true)}
+          className="flex h-10 w-10 items-center justify-center rounded-md bg-white/90 shadow-sm text-[#496095] hover:bg-white hover:text-[#496095CC] transition-colors"
+          aria-label="Expand chart"
+        >
+          <span className="material-symbols-outlined text-2xl">expand_content</span>
+        </button>
+      </div>
       <div
         className="relative h-80 w-full rounded-lg bg-white p-3 shadow-sm cursor-pointer border-0"
         role="button"
@@ -362,17 +372,11 @@ export const DataChart = ({ data }: DataChartProps) => {
           }
         }}
       >
-        <button
-          type="button"
-          onClick={() => setIsExpanded(true)}
-          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-white/90 shadow-sm text-[#496095] hover:bg-white hover:text-[#496095CC] transition-colors"
-          aria-label="Expand chart"
-        >
-          <span className="material-symbols-outlined text-2xl">expand_content</span>
-        </button>
-        <ResponsiveContainer width="100%" height="100%">
-          {renderChart()}
-        </ResponsiveContainer>
+        <div className="h-full w-full flex items-center justify-center">
+          <ResponsiveContainer width="96%" height="100%">
+            {renderChart()}
+          </ResponsiveContainer>
+        </div>
       </div>
       
       <div className="flex gap-2 mt-3 justify-start">
@@ -443,9 +447,11 @@ export const DataChart = ({ data }: DataChartProps) => {
               </button>
             </div>
             <div className="h-[480px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                {renderChart(true)}
-              </ResponsiveContainer>
+              <div className="h-full w-full flex items-center justify-center">
+                <ResponsiveContainer width="92%" height="100%">
+                  {renderChart(true)}
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </div>
