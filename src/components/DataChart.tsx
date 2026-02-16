@@ -84,6 +84,15 @@ const findConfig = (data: DataRow[]) => {
 export const DataChart = ({ data }: DataChartProps) => {
   const [chartType, setChartType] = useState<"vertical" | "horizontal" | "pastel" | "lineal">("vertical");
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const getAvailableChartTypes = (dataCount: number) => {
+    if (dataCount <= 5) return ["vertical", "horizontal", "pastel", "lineal"];
+    if (dataCount <= 15) return ["vertical", "horizontal", "lineal"];
+    if (dataCount < 30) return ["vertical", "lineal"];
+    if (dataCount < 50) return ["vertical", "horizontal", "lineal"];
+    return ["lineal"];
+  };
+
   const chartTitles: Record<typeof chartType, string> = {
     vertical: "Vertical bar",
     horizontal: "Horizontal bar",
@@ -175,10 +184,25 @@ export const DataChart = ({ data }: DataChartProps) => {
     return normalized.map((row) => String(row[categoryKey] ?? ""));
   }, [normalized, categoryKey]);
 
+  const dataCount = chartLabels.length;
+  const availableChartTypes = getAvailableChartTypes(dataCount);
+  const showXAxisLabels = dataCount < 30;
+  const showHoverHint = dataCount >= 30;
+
+  // Ensure current chartType is available
+  if (!availableChartTypes.includes(chartType)) {
+    const firstAvailable = availableChartTypes[0] as typeof chartType;
+    if (chartType !== firstAvailable) {
+      setChartType(firstAvailable);
+    }
+  }
+
   const renderChart = (expanded = false) => {
     const axisColor = "#496095";
     const gridColor = "#49609533";
     const fontSize = expanded ? 14 : 12;
+    const showHint = showHoverHint && (chartType === "lineal" || chartType === "horizontal");
+    const hintText = showHint ? " (Pasar el cursor para ver detalles)" : "";
 
     const tooltipCallbacks = {
       label: (context: any) => {
@@ -201,6 +225,8 @@ export const DataChart = ({ data }: DataChartProps) => {
             data: chartValues,
             backgroundColor: chartLabels.map((_, index) => pastelColors[index % pastelColors.length]),
             borderWidth: 0,
+            radius: expanded ? "70%" : "60%",
+            hoverOffset: expanded ? 8 : 6,
           },
         ],
       };
@@ -241,6 +267,11 @@ export const DataChart = ({ data }: DataChartProps) => {
       const pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: expanded
+            ? { top: 36, right: 36, bottom: 36, left: 36 }
+            : { top: 24, right: 24, bottom: 24, left: 24 },
+        },
         plugins: {
           datalabels: {
             color: axisColor,
@@ -248,6 +279,8 @@ export const DataChart = ({ data }: DataChartProps) => {
             anchor: "end" as const,
             align: "end" as const,
             offset: expanded ? 14 : 10,
+            clamp: false,
+            clip: false,
             formatter: (value: unknown, context: any) => {
               const label = context?.label ? String(context.label) : "";
               const valueText = formatNumber(value);
@@ -277,6 +310,7 @@ export const DataChart = ({ data }: DataChartProps) => {
         ticks: {
           color: axisColor,
           font: { size: fontSize, weight: 600 },
+          display: showXAxisLabels,
         },
         grid: {
           color: gridColor,
@@ -314,6 +348,7 @@ export const DataChart = ({ data }: DataChartProps) => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+          datalabels: { display: false },
           legend: { display: false },
           tooltip: { callbacks: tooltipCallbacks },
         },
@@ -383,6 +418,7 @@ export const DataChart = ({ data }: DataChartProps) => {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        datalabels: { display: false },
         legend: { display: false },
         tooltip: { callbacks: tooltipCallbacks },
       },
@@ -427,59 +463,71 @@ export const DataChart = ({ data }: DataChartProps) => {
         </div>
       </div>
       
-      <div className="flex flex-wrap gap-2 mt-3 justify-start">
-        <button
-          onClick={() => setChartType("horizontal")}
-          aria-label="Horizontal bar"
-          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-            chartType === "horizontal"
-              ? "text-white"
-              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-          }`}
-          style={chartType === "horizontal" ? { backgroundColor: "#496095" } : {}}
-        >
-          <span className="material-symbols-outlined text-lg sm:hidden">bar_chart</span>
-          <span className="hidden sm:inline">Horizontal bar</span>
-        </button>
-        <button
-          onClick={() => setChartType("vertical")}
-          aria-label="Vertical bar"
-          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-            chartType === "vertical"
-              ? "text-white"
-              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-          }`}
-          style={chartType === "vertical" ? { backgroundColor: "#496095" } : {}}
-        >
-          <span className="material-symbols-outlined text-lg sm:hidden">bar_chart</span>
-          <span className="hidden sm:inline">Vertical bar</span>
-        </button>
-        <button
-          onClick={() => setChartType("pastel")}
-          aria-label="Pastel"
-          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-            chartType === "pastel"
-              ? "text-white"
-              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-          }`}
-          style={chartType === "pastel" ? { backgroundColor: "#496095" } : {}}
-        >
-          <span className="material-symbols-outlined text-lg sm:hidden">pie_chart</span>
-          <span className="hidden sm:inline">Pastel</span>
-        </button>
-        <button
-          onClick={() => setChartType("lineal")}
-          aria-label="Lineal"
-          className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-            chartType === "lineal"
-              ? "text-white"
-              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-          }`}
-          style={chartType === "lineal" ? { backgroundColor: "#496095" } : {}}
-        >
-          <span className="material-symbols-outlined text-lg sm:hidden">show_chart</span>
-          <span className="hidden sm:inline">Lineal</span>
-        </button>
+      <div className="flex flex-col gap-3 mt-3">
+        <div className="flex flex-wrap gap-2 justify-start">
+          {availableChartTypes.includes("horizontal") && (
+            <button
+              onClick={() => setChartType("horizontal")}
+              aria-label="Horizontal bar"
+              className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                chartType === "horizontal"
+                  ? "text-[#496095] bg-[#496095]/20 outline outline-1 outline-[#496095]"
+                  : "text-[#496095] outline outline-1 outline-[#496095] hover:bg-[#496095]/5"
+              }`}
+            >
+              <span className="material-symbols-outlined text-lg sm:hidden rotate-90">bar_chart</span>
+              <span className="hidden sm:inline">Horizontal bar</span>
+            </button>
+          )}
+          {availableChartTypes.includes("vertical") && (
+            <button
+              onClick={() => setChartType("vertical")}
+              aria-label="Vertical bar"
+              className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                chartType === "vertical"
+                  ? "text-[#496095] bg-[#496095]/20 outline outline-1 outline-[#496095]"
+                  : "text-[#496095] outline outline-1 outline-[#496095] hover:bg-[#496095]/5"
+              }`}
+            >
+              <span className="material-symbols-outlined text-lg sm:hidden">bar_chart</span>
+              <span className="hidden sm:inline">Vertical bar</span>
+            </button>
+          )}
+          {availableChartTypes.includes("pastel") && (
+            <button
+              onClick={() => setChartType("pastel")}
+              aria-label="Pastel"
+              className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                chartType === "pastel"
+                  ? "text-[#496095] bg-[#496095]/20 outline outline-1 outline-[#496095]"
+                  : "text-[#496095] outline outline-1 outline-[#496095] hover:bg-[#496095]/5"
+              }`}
+            >
+              <span className="material-symbols-outlined text-lg sm:hidden">pie_chart</span>
+              <span className="hidden sm:inline">Pastel</span>
+            </button>
+          )}
+          {availableChartTypes.includes("lineal") && (
+            <button
+              onClick={() => setChartType("lineal")}
+              aria-label="Lineal"
+              className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                chartType === "lineal"
+                  ? "text-[#496095] bg-[#496095]/20 outline outline-1 outline-[#496095]"
+                  : "text-[#496095] outline outline-1 outline-[#496095] hover:bg-[#496095]/5"
+              }`}
+            >
+              <span className="material-symbols-outlined text-lg sm:hidden">show_chart</span>
+              <span className="hidden sm:inline">Lineal</span>
+            </button>
+          )}
+        </div>
+        {showHoverHint && (
+          <div className="flex items-start gap-2 text-xs text-gray-600 px-2 py-1 bg-blue-50 rounded-md">
+            <span className="material-symbols-outlined text-sm flex-shrink-0 mt-0.5">info</span>
+            <span>Los nombres del eje X están ocultos, debido a la cantidad de datos. Pasa el cursor o da clic para ver detalles.</span>
+          </div>
+        )}
       </div>
 
       {isExpanded && (
@@ -488,7 +536,7 @@ export const DataChart = ({ data }: DataChartProps) => {
           onClick={() => setIsExpanded(false)}
         >
           <div
-            className="relative w-full max-w-5xl rounded-2xl bg-white p-6 shadow-xl"
+            className="relative w-full max-w-7xl rounded-2xl bg-white p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
@@ -502,11 +550,19 @@ export const DataChart = ({ data }: DataChartProps) => {
                 <span className="material-symbols-outlined text-2xl">close</span>
               </button>
             </div>
+          
             <div className="h-[480px] w-full">
               <div className="h-full w-full">
                 {renderChart(true)}
               </div>
             </div>
+            <br />
+            {showHoverHint && (
+              <div className="flex items-center gap-4 text-xs text-gray-600 px-2 py-2 bg-blue-50 rounded-md mb-4">
+                <span className="material-symbols-outlined text-sm flex-shrink-0 mt-0.5">info</span>
+                <span>Los nombres del eje X están ocultos, debido a la cantidad de datos. Pasa el cursor o da clic para ver detalles.</span>
+              </div>
+            )}
           </div>
         </div>
       )}
