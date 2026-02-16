@@ -46,10 +46,10 @@ export const AppHeader = ({ onMenuToggle }: AppHeaderProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            // onClick={() => {
-            //  localStorage.clear();
-            //  window.location.href = "/login";
-            // }}
+             onClick={() => {
+              localStorage.clear();
+              window.location.href = "/login";
+             }}
             className="flex items-center gap-2"
           >
             <LogOut className="h-4 w-4" /> Cerrar sesión
