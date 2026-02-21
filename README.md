@@ -1,4 +1,4 @@
-# 🧙‍♂️ SQL Sensei - IA para Consultas de Base de Datos
+# IAI
 
 [![React](https://img.shields.io/badge/React-18.3-blue?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -6,26 +6,13 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**SQL Sensei** es una aplicación web moderna que utiliza inteligencia artificial para convertir consultas en lenguaje natural a SQL y visualizar los resultados de forma interactiva. Diseñada especialmente para análisis de datos de eventos de formación docente.
-
-## � Tabla de Contenidos
-
-- [Características](#características)
-- [Requisitos Previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Arquitectura](#arquitectura)
-- [Tecnologías](#tecnologías)
-- [Scripts Disponibles](#scripts-disponibles)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
+**IAI** es una aplicación web que utiliza inteligencia artificial para convertir consultas en lenguaje natural a SQL y visualizar los resultados de forma interactiva.
 
 ---
 
 ## ✨ Características
 
-### 🤖 Interfaz de Chat IA
+### 🤖 Interfaz de ChatBot
 - Envía consultas en **lenguaje natural** sobre tu base de datos
 - Recibe respuestas inteligentes generadas por IA
 - Historial de conversación persistente
@@ -34,20 +21,6 @@
 ### 📊 Visualización de Datos
 - Tablas interactivas con resultados de consultas
 - Gráficos personalizados para análisis visual
-- Formateo automático de datos
-- Soporte para múltiples tipos de datos
-
-### 🎨 Interfaz Moderna
-- Diseño responsivo (mobile-first)
-- Tema adaptable (claro/oscuro)
-- Componentes UI reutilizables
-- Experiencia de usuario fluida con animaciones
-
-### ⚡ Rendimiento
-- Build optimizado con Vite
-- Carga rápida de la aplicación
-- Lazy loading de componentes
-- Caché inteligente de datos
 
 ---
 
@@ -299,16 +272,6 @@ npm run dev        # Ejecutar en desarrollo
 ```
 ---
 
-## 🚀 Performance
-
-- **Lighthouse Score**: 90+
-- Código dividido automáticamente (code-splitting)
-- Caché de API con React Query
-- Imágenes optimizadas
-- Minificación automática
-
----
-
 ## 📝 Convenciones de Código
 
 ### Componentes
@@ -337,10 +300,7 @@ const WEBHOOK_URL = "https://..."; // constantes en UPPER_SNAKE_CASE
 
 ---
 
-## 🤝 Contribución
-
-¡Las contribuciones son bienvenidas! Por favor:
-
+## Contribución
 1. **Fork** el repositorio
 2. **Crea una rama** (`git checkout -b feature/AmazingFeature`)
 3. **Commit cambios** (`git commit -m 'Add AmazingFeature'`)
@@ -356,9 +316,3 @@ const WEBHOOK_URL = "https://..."; // constantes en UPPER_SNAKE_CASE
 - Powered by [N8N](https://n8n.io)
 - UI Components from [shadcn/ui](https://ui.shadcn.com)
 - Icons from [Lucide](https://lucide.dev)
-
-
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
