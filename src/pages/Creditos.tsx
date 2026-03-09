@@ -2,10 +2,13 @@ import { useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { Sidebar } from "@/components/Sidebar";
 import { Phone, Globe, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getAssetUrl } from "@/utils/paths";
 
 
 const CreditosPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
@@ -13,7 +16,7 @@ const CreditosPage = () => {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onNewChat={() => {
-          window.location.href = "/";
+          navigate("/");
         }}
       />
 
@@ -107,7 +110,7 @@ const CreditosPage = () => {
 
             <div className="flex justify-center md:justify-end gap-4 items-center">
               <img
-                src="2_3logoNuevo.png"
+                src={getAssetUrl("2_3logoNuevo.png")}
                 alt="Logo UASLP y Secretaría Académica"
                 className="h-24 md:h-32 w-auto"
               />

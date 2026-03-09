@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Mail, Lock, Phone } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { login } from "@/utils/auth";
+import { getAssetUrl } from "@/utils/paths";
 
 const Login = () => {
   const [rpe, setRpe] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,8 +18,8 @@ const Login = () => {
     try {
       // Simular llamada al backend
       console.log("Login attempt:", { rpe, password });
-      // await login(rpe, password);
-      // window.location.href = "/";
+      login();
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -28,7 +32,7 @@ const Login = () => {
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-[60%] bg-gradient-to-b from-blue-50 to-white items-center justify-center p-0 overflow-hidden">
         <img
-          src="/1_2imgSecretaria.png"
+          src={getAssetUrl("1_2imgSecretaria.png")}
           alt="UASLP"
           className="w-full h-full object-cover object-center"
         />
@@ -40,7 +44,7 @@ const Login = () => {
           {/* Logo Section */}
           <div className="flex justify-center">
             <img
-              src="/1_3logo-sa_uaslp-blue.png"
+              src={getAssetUrl("1_3logo-sa_uaslp-blue.png")}
               alt="UASLP y Secretaría Académica"
               className="w-auto"
             />

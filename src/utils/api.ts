@@ -9,7 +9,7 @@ export const sendMessage = async (message: string): Promise<ApiResponse> => {
   try {
     console.log("Sending message to webhook:", message);
 
-    const response = await fetch(WEBHOOK_URL, {
+    const response = await fetch(TEST_WEBHOOK_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

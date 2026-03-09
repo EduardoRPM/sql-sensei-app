@@ -5,12 +5,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Info, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getAssetUrl } from "@/utils/paths";
+import { logout } from "@/utils/auth";
 
 interface AppHeaderProps {
   onMenuToggle?: () => void;
 }
 
 export const AppHeader = ({ onMenuToggle }: AppHeaderProps) => {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-blue-900 text-white p-4 flex items-center justify-between shadow-md">
       <div className="flex items-center gap-4">
@@ -25,7 +30,7 @@ export const AppHeader = ({ onMenuToggle }: AppHeaderProps) => {
             </svg>
           </button>
         )}
-        <img src="/logoUaslp-white.png" alt="logoUaslp" className="h-12 w-auto" />
+        <img src={getAssetUrl("logoUaslp-white.png")} alt="logoUaslp" className="h-12 w-auto" />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -38,7 +43,7 @@ export const AppHeader = ({ onMenuToggle }: AppHeaderProps) => {
         <DropdownMenuContent align="end" className="bg-white text-black">
           <DropdownMenuItem
             onClick={() => {
-              window.location.href = "/Creditos";
+              navigate("/creditos");
             }}
             className="flex items-center gap-2"
           >
@@ -47,8 +52,8 @@ export const AppHeader = ({ onMenuToggle }: AppHeaderProps) => {
 
           <DropdownMenuItem
              onClick={() => {
-              localStorage.clear();
-              window.location.href = "/login";
+              logout();
+              navigate("/login", { replace: true });
              }}
             className="flex items-center gap-2"
           >
